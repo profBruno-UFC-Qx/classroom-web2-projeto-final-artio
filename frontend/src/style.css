@@ -8,6 +8,14 @@
   font-style: normal;
 }
 
+:root {
+  --blue: #008fdc;
+  --red: #f85659;
+  --purple: #b33cc5;
+  --green: #01e1ce;
+  --yellow: #ffb530;
+}
+
 .ade-display {
   font-family: "Ade-Display", sans-serif;
   font-size: larger;
@@ -44,4 +52,70 @@
 }
 .body {
   font-family: "Poppins", sans-serif;
+}
+.page-layout {
+  background-image: url("./assets/bg.png");
+  background-size: contain;
+  background-repeat: repeat;
+}
+.bg-blue {
+  background-color: var(--blue);
+}
+.bg-red {
+  background-color: var(--red);
+}
+.bg-purple {
+  background-color: var(--purple);
+}
+.bg-green {
+  background-color: var(--green);
+}
+.bg-yellow {
+  background-color: var(--yellow);
+}
+/* darker hover states with smooth transition */
+.bg-blue,
+.bg-red,
+.bg-purple,
+.bg-green,
+.bg-yellow {
+  transition: background-color 150ms ease, filter 150ms ease;
+}
+
+/* apply a subtle darken on hover/focus */
+.bg-blue:hover,
+.bg-blue:focus-visible {
+  filter: brightness(0.86);
+}
+.bg-red:hover,
+.bg-red:focus-visible {
+  filter: brightness(0.86);
+}
+.bg-purple:hover,
+.bg-purple:focus-visible {
+  filter: brightness(0.86);
+}
+.bg-green:hover,
+.bg-green:focus-visible {
+  filter: brightness(0.86);
+}
+.bg-yellow:hover,
+.bg-yellow:focus-visible {
+  filter: brightness(0.86);
+}
+
+.text-blue {
+  color: var(--blue);
+}
+.text-red {
+  color: var(--red);
+}
+.text-purple {
+  color: var(--purple);
+}
+.text-green {
+  color: var(--green);
+}
+.text-yellow {
+  color: var(--yellow);
 }
