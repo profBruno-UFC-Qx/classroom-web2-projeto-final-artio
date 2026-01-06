@@ -3,6 +3,7 @@ import { computed } from "vue";
 
 interface TextButtonProps {
   color?: "blue" | "red" | "green" | "purple" | "yellow";
+  type?: "button" | "submit" | "reset";
 }
 const props = withDefaults(defineProps<TextButtonProps>(), {
   color: "blue",

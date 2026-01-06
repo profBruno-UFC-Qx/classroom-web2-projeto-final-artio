@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { Dot } from "lucide-vue-next";
+import { ArrowLeft, Dot } from "lucide-vue-next";
 import PageLayout from "../components/PageLayout.vue";
+import TextButton from "../components/TextButton.vue";
 </script>
 <template>
   <PageLayout>
@@ -11,27 +12,13 @@ import PageLayout from "../components/PageLayout.vue";
       <p class="text-lg alice-regular">Ações rápidas</p>
       <div class="quick-actions flex flex-row gap-4 justify-between mt-2">
         <router-link to="/">
-          <button
-            class="flex justify-center itens-center w-fit bg-gray-200 px-6 hover:bg-gray-300 hover:cursor-pointer py-2 border-gray-500 border- rounded-lg"
-          >
-            Voltar
-          </button>
+          <TextButton>
+            <ArrowLeft />
+          </TextButton>
         </router-link>
-        <button
-          class="flex justify-center itens-center w-fit bg-gray-200 px-6 hover:bg-gray-300 hover:cursor-pointer py-2 border-gray-500 border- rounded-lg"
-        >
-          Projetos
-        </button>
-        <button
-          class="flex justify-center itens-center w-fit bg-gray-200 px-6 hover:bg-gray-300 hover:cursor-pointer py-2 border-gray-500 rounded-lg"
-        >
-          Mensagens
-        </button>
-        <button
-          class="flex justify-center itens-center w-fit bg-gray-200 px-6 hover:bg-gray-300 hover:cursor-pointer py-2 border-gray-500 rounded-lg"
-        >
-          Notificações
-        </button>
+        <TextButton color="purple">Projetos</TextButton>
+        <TextButton color="green">Mensagens</TextButton>
+        <TextButton color="yellow">Notificações</TextButton>
         <button
           class="flex justify-center itens-center w-fit bg-gray-200 px-6 hover:bg-gray-300 hover:cursor-pointer py-2 border-gray-500 rounded-lg"
         >

@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import HomePage from "../pages/HomePage.vue";
 import Dashboard from "../pages/Dashboard.vue";
+import Login from "../pages/Login.vue";
 
 const router = createRouter({
   // router options
@@ -15,6 +16,11 @@ const router = createRouter({
       path: "/dashboard",
       name: "dashboard",
       component: Dashboard,
+    },
+    {
+      path: "/auth",
+      name: "login",
+      component: Login,
     },
   ],
 });

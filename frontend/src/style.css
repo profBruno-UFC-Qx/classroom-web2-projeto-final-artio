@@ -119,3 +119,6 @@
 .text-yellow {
   color: var(--yellow);
 }
+.group {
+  width: 100%;
+}
