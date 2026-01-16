@@ -4,9 +4,9 @@ import AuthService from "../services/AuthService";
 class AuthController {
   // cadastro
   public static async register(req: Request, res: Response) {
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
     try {
-      const newUser = await AuthService.register(email, password);
+      const newUser = await AuthService.register(email, password, name);
       res.status(201).json(newUser);
     } catch (error) {
       res.status(400).json({ message: (error as Error).message });

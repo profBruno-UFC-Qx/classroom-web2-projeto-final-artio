@@ -1,4 +1,4 @@
-import bcrypt from "bcryptjs"; // encriptação de senhas
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import prisma from "../models/PrismaClient";
 
@@ -6,7 +6,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "default";
 
 class AuthService {
   // cadastro
-  public static async register(email: string, password: string) {
+  public static async register(email: string, password: string, name: string) {
     const userExists = await AuthService.findUserByEmail(email);
     if (userExists) {
       throw new Error("User already exists");
@@ -17,6 +17,7 @@ class AuthService {
       data: {
         email,
         password: hashedPassword,
+        name,
       },
     });
     return newUser;
