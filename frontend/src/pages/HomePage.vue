@@ -15,7 +15,9 @@ import TextButton from "../components/TextButton.vue";
       </div>
       <div class="action-buttons flex gap-4 mt-6">
         <TextButton>Primeiros Passos</TextButton>
-        <TextButton>Login</TextButton>
+        <router-link to="/login">
+          <TextButton>Login</TextButton>
+        </router-link>
       </div>
     </div>
   </PageLayout>
