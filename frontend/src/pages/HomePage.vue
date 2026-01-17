@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import PageLayout from "../components/PageLayout.vue";
 import TextButton from "../components/TextButton.vue";
+import { useAuthStore } from "../stores/authStore";
+import { ref } from "vue";
+
+const authenticated = ref(useAuthStore().isAuthenticated);
 </script>
 <template>
   <PageLayout>
@@ -15,9 +19,16 @@ import TextButton from "../components/TextButton.vue";
       </div>
       <div class="action-buttons flex gap-4 mt-6">
         <TextButton>Primeiros Passos</TextButton>
-        <router-link to="/login">
-          <TextButton>Login</TextButton>
-        </router-link>
+        <div v-if="authenticated">
+          <router-link to="/dashboard">
+            <TextButton>Dashboard</TextButton>
+          </router-link>
+        </div>
+        <div v-else>
+          <router-link to="/login">
+            <TextButton>Login</TextButton>
+          </router-link>
+        </div>
       </div>
     </div>
   </PageLayout>
