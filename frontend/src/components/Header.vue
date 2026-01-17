@@ -22,9 +22,11 @@ const authenticated = ref(useAuthStore().isAuthenticated);
       </router-link>
     </div>
     <div v-if="authenticated">
-      <div class="bg-gray-800 rounded-full h-4 w-4">
-        <!-- placeholder for the profile menu icon -->
-      </div>
+      <router-link to="/profile" class="mr-4">
+        <div class="bg-gray-800 rounded-full h-4 w-4">
+          <!-- placeholder for the profile menu icon -->
+        </div>
+      </router-link>
     </div>
     <div v-else>
       <text-button to="/register" class="mr-4">Registrar-se</text-button>

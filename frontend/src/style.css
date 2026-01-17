@@ -18,12 +18,16 @@
 
 .ade-display {
   font-family: "Ade-Display", sans-serif;
-  font-size: larger;
   text-transform: uppercase;
 }
 .alice-regular {
   font-family: "Alice", serif;
   font-weight: 400;
+  font-style: normal;
+}
+.alice-bold {
+  font-family: "Alice", serif;
+  font-weight: 700;
   font-style: normal;
 }
 .poppins-regular {
@@ -79,7 +83,9 @@
 .bg-purple,
 .bg-green,
 .bg-yellow {
-  transition: background-color 150ms ease, filter 150ms ease;
+  transition:
+    background-color 150ms ease,
+    filter 150ms ease;
 }
 
 /* apply a subtle darken on hover/focus */
