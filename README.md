@@ -1,13 +1,10 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/iVa2Dd1Z)
-[![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=21100662)
-
-# :checkered_flag: Artio - Gerenciador de comissões e projetos
+:checkered_flag: Artio - Gerenciador de comissões e projetos
 
 Artio é um gerenciador de projetos para artistas, designers e freelancers que buscam um ambiente para gerenciar todos os elementos e recursos necessários para os seus trabalhos. Aqui, eles poderão organizar projetos e exibir seus trabalhos, além de permitir aos clientes visualizar o progresso do trabalho.
 
 ## :technologist: Membros da equipe
 
-Maria Sofia Jeronimo de Lima, Ciência da Computação - 536441
+Sofia, Ciência da Computação
 
 ## :bulb: Objetivo Geral
 
@@ -43,20 +40,25 @@ Descrever o objetivo de geral do projeto
 ## :triangular_flag_on_post: Principais funcionalidades da aplicação
 
 ### Gerenciamento de projetos e comissões
+
 - Cada artista pode adicionar projetos ao seu perfil, podendo marcá-los como públicos ou privados -- estes podem ser acessados pelos autores e seus colaboradores.
 
 ### Visualização de projetos
+
 - Cada artista pode marcar projetos como públicos, e estes poderão ser visualizados tanto no portifólio do artista como junto dos projetos de outros usuários em um feed coletivo.
 
 ### Solicitação de comissões
+
 - Clientes e artistas podem enviar solicitações para artistas para a elaboração de projetos.
 
 ### Comunicação entre clientes e artistas
+
 - Será possível trocar mensagens entre artistas e clientes.
 
 ## :spiral_calendar: Entidades ou tabelas do sistema
 
 ### Cliente/usuário
+
     - Nome
     - ID
     - E-mail
@@ -67,12 +69,14 @@ Descrever o objetivo de geral do projeto
     - Projetos contratados
 
 ### Artista
+
     (Coisas de usuário)
     - Portfólio
     - Projetos colaborados
     - Clientes
 
 ### Projeto
+
     - Nome
     - ID
     - Prazo
@@ -84,10 +88,12 @@ Descrever o objetivo de geral do projeto
     - Inspirações e referências
 
 ### Colaborador
+
     - Usuário
     - Projeto associado
 
 ### Solicitações
+
     - Usuário
     - ID
     - Artista
@@ -96,5 +102,6 @@ Descrever o objetivo de geral do projeto
     - Orçamento
 
 ### Portfólio
+
     - Projetos
     - Artista
