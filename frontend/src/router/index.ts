@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import HomePage from "../pages/HomePage.vue";
 import Dashboard from "../pages/Dashboard.vue";
 import Login from "../pages/Login.vue";
+import Register from "../pages/Register.vue";
 
 const router = createRouter({
   // router options
@@ -21,6 +22,11 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: Login,
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: Register,
     },
   ],
 });
