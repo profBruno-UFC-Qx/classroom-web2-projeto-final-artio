@@ -1,0 +1,124 @@
+@import url("https://fonts.googleapis.com/css2?family=Alice&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Ade-Display";
+  src: url(/src/assets/Ade-Display.otf) format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --blue: #008fdc;
+  --red: #f85659;
+  --purple: #b33cc5;
+  --green: #01e1ce;
+  --yellow: #ffb530;
+}
+
+.ade-display {
+  font-family: "Ade-Display", sans-serif;
+  font-size: larger;
+  text-transform: uppercase;
+}
+.alice-regular {
+  font-family: "Alice", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.poppins-regular {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.sketch-red {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #ff0000;
+  background-color: gainsboro;
+}
+.sketch-blue {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #0000ff;
+  background-color: lightgray;
+}
+.sketch-green {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #00ff00;
+  background-color: silver;
+}
+.body {
+  font-family: "Poppins", sans-serif;
+}
+.page-layout {
+  background-image: url("./assets/bg.png");
+  background-size: contain;
+  background-repeat: repeat;
+}
+.bg-blue {
+  background-color: var(--blue);
+}
+.bg-red {
+  background-color: var(--red);
+}
+.bg-purple {
+  background-color: var(--purple);
+}
+.bg-green {
+  background-color: var(--green);
+}
+.bg-yellow {
+  background-color: var(--yellow);
+}
+/* darker hover states with smooth transition */
+.bg-blue,
+.bg-red,
+.bg-purple,
+.bg-green,
+.bg-yellow {
+  transition: background-color 150ms ease, filter 150ms ease;
+}
+
+/* apply a subtle darken on hover/focus */
+.bg-blue:hover,
+.bg-blue:focus-visible {
+  filter: brightness(0.86);
+}
+.bg-red:hover,
+.bg-red:focus-visible {
+  filter: brightness(0.86);
+}
+.bg-purple:hover,
+.bg-purple:focus-visible {
+  filter: brightness(0.86);
+}
+.bg-green:hover,
+.bg-green:focus-visible {
+  filter: brightness(0.86);
+}
+.bg-yellow:hover,
+.bg-yellow:focus-visible {
+  filter: brightness(0.86);
+}
+
+.text-blue {
+  color: var(--blue);
+}
+.text-red {
+  color: var(--red);
+}
+.text-purple {
+  color: var(--purple);
+}
+.text-green {
+  color: var(--green);
+}
+.text-yellow {
+  color: var(--yellow);
+}
+.group {
+  width: 100%;
+}
