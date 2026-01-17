@@ -6,24 +6,25 @@ import router from "../router";
 
 const email = ref("");
 const password = ref("");
+const nome = ref("");
 const errorMessage = ref("");
 
-async function handleLogin() {
+async function handleRegister() {
   const sucess = await useAuthStore().login({
     email: email.value,
     password: password.value,
   });
   if (sucess) {
     // Redirecionar para a página principal ou dashboard após o login bem-sucedido
-    console.log("Login realizado com sucesso!");
+    console.log("Cadastro realizado com sucesso!");
     errorMessage.value = "";
     router.push({ name: "home" });
   } else {
     // Exibir mensagem de erro
     errorMessage.value =
-      "Falha no login. Verifique suas credenciais e tente novamente.";
+      "Falha no cadastro. Verifique suas credenciais e tente novamente.";
     console.error(
-      "Falha no login. Verifique suas credenciais e tente novamente.",
+      "Falha no cadastro. Verifique suas credenciais e tente novamente.",
     );
   }
 }
@@ -33,8 +34,18 @@ async function handleLogin() {
     <div
       class="login-form mt-4 p-6 rounded-lg items-center justify-center mx-auto"
     >
-      <h1 class="text-4xl ade-display text-center w-full">Login</h1>
-      <form class="flex flex-col gap-4" @submit.prevent="handleLogin">
+      <h1 class="text-4xl ade-display text-center w-full">Cadastro</h1>
+      <form class="flex flex-col gap-4" @submit.prevent="handleRegister">
+        <div class="form-group">
+          <label for="username" class="alice-regular">Nome</label>
+          <input
+            type="text"
+            id="username"
+            v-model="nome"
+            class="w-full p-2 border border-gray-400 rounded-lg"
+            placeholder="Insira seu nome."
+          />
+        </div>
         <div class="form-group">
           <label for="username" class="alice-regular">Email</label>
           <input
@@ -66,9 +77,9 @@ async function handleLogin() {
         </button>
       </form>
       <p class="mt-4 alice-regular text-center">
-        Não possui uma conta?
-        <router-link to="/register" class="text-blue-500"
-          >Registre-se aqui</router-link
+        Já possui uma conta?
+        <router-link to="/login" class="text-blue-500"
+          >Faça login aqui</router-link
         >
       </p>
     </div>
