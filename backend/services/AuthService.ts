@@ -39,7 +39,7 @@ class AuthService {
       throw new Error("Invalid email or password");
     }
     const token = jwt.sign({ userId: user.username }, JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "24h",
     });
     return { token, user };
   }

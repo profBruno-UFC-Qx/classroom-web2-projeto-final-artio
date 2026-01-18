@@ -8,6 +8,9 @@ import router from "../router";
 import NewProjectModal from "../components/NewProjectModal.vue";
 import { onMounted } from "vue";
 import { useRoute } from "vue-router";
+import api from "../services/api";
+import ProjectMini from "../components/ProjectMini.vue";
+import type { Project } from "../types/project";
 
 const route = useRoute();
 const userId = route.params.username as string;
@@ -27,13 +30,18 @@ const isOwnProfile = computed(() => {
   );
   return authStore.user && authStore.user.username === userId;
 });
-
+const projects = ref<Project[] | null>(null);
 onMounted(async () => {
   try {
-    name.value = authStore.user?.name || "";
-    username.value = authStore.user?.username || "";
-    description.value =
-      authStore.user?.description || "Sem descrição disponível.";
+    const response = await api.get(`/profile/${userId}`);
+    const userData = response.data;
+    console.log("Projects response data:", userData);
+    name.value = userData.name;
+    username.value = userData.username;
+    description.value = userData.description || "Sem descrição disponível.";
+
+    const projectsResponse = await api.get(`/projects/user/${userId}`);
+    projects.value = projectsResponse.data;
   } catch (error) {
     console.error("Erro ao buscar dados do usuário:", error);
   }
@@ -45,6 +53,12 @@ function handleLogout() {
   router.push({ name: "home" });
 }
 
+function onProjectCreated() {
+  // Re-fetch projects after a new project is created
+  api.get(`/projects/user/${userId}`).then((response) => {
+    projects.value = response.data;
+  });
+}
 function openCloseModal() {
   createModal.value = !createModal.value;
 }
@@ -87,7 +101,7 @@ function openCloseModal() {
         <TextButton color="purple">Dashboard</TextButton>
         <TextButton color="red" @click="handleLogout">Logout</TextButton>
       </div>
-      <div class="project-container w-full">
+      <div class="project-container w-full flex flex-col gap-4 mt-4">
         <div
           class="title-container flex flex-row justify-between items-center pr-4"
         >
@@ -97,11 +111,20 @@ function openCloseModal() {
               class="size-5 cursor-pointer hover:text-gray-600"
               @click="openCloseModal"
             />
-            <NewProjectModal v-if="createModal" :onClose="openCloseModal" />
+            <NewProjectModal
+              v-if="createModal"
+              :onClose="openCloseModal"
+              :onProjectCreated="onProjectCreated"
+            />
           </div>
         </div>
-        <!-- Placeholder for user projects -->
-        <p>Aqui estarão listados os projetos associados ao usuário.</p>
+        <div
+          class="project-list w-full flex flex-row gap-4 overflow-x-auto pb-4"
+          v-if="projects && projects.length > 0"
+        >
+          <ProjectMini :project="p" v-for="p in projects" :key="p.id" />
+        </div>
+        <p v-else>Nenhum projeto encontrado.</p>
       </div>
     </div>
   </PageLayout>

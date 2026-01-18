@@ -5,7 +5,10 @@ import { ref } from "vue";
 import { useProjectStore } from "../stores/projectStore";
 import { useAuthStore } from "../stores/authStore";
 
-const props = defineProps<{ onClose: () => void }>();
+const props = defineProps<{
+  onClose: () => void;
+  onProjectCreated: () => void;
+}>();
 
 const projectName = ref("");
 const projectDescription = ref("");
@@ -16,13 +19,14 @@ function togglePublic() {
 }
 async function handleSubmit() {
   const sucess = await useProjectStore().createProject({
-    title: projectName.value,
+    name: projectName.value,
     description: projectDescription.value,
     isPublic: isPublic.value,
     username: useAuthStore().user.username,
   });
   if (sucess) {
     console.log("Projeto criado com sucesso!");
+    props.onProjectCreated();
     props.onClose();
   } else {
     console.error("Falha ao criar o projeto. Tente novamente.");

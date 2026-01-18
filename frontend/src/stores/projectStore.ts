@@ -3,7 +3,7 @@ import api from "../services/api";
 
 export const useProjectStore = defineStore("project", () => {
   async function createProject(projectData: {
-    title: string;
+    name: string;
     description: string;
     isPublic: boolean;
     username: string;
