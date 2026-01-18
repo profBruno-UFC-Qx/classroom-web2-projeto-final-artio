@@ -7,12 +7,15 @@ import router from "../router";
 const email = ref("");
 const password = ref("");
 const nome = ref("");
+const username = ref("");
 const errorMessage = ref("");
 
 async function handleRegister() {
-  const sucess = await useAuthStore().login({
+  const sucess = await useAuthStore().register({
+    name: nome.value,
     email: email.value,
     password: password.value,
+    username: username.value,
   });
   if (sucess) {
     // Redirecionar para a página principal ou dashboard após o login bem-sucedido
@@ -40,8 +43,18 @@ async function handleRegister() {
           <label for="username" class="alice-regular">Nome</label>
           <input
             type="text"
-            id="username"
+            id="name"
             v-model="nome"
+            class="w-full p-2 border border-gray-400 rounded-lg"
+            placeholder="Insira seu nome."
+          />
+        </div>
+        <div class="form-group">
+          <label for="username" class="alice-regular">Nome de usuário</label>
+          <input
+            type="text"
+            id="username"
+            v-model="username"
             class="w-full p-2 border border-gray-400 rounded-lg"
             placeholder="Insira seu nome."
           />
@@ -73,7 +86,7 @@ async function handleRegister() {
           type="submit"
           class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
         >
-          Entrar
+          Cadastrar-se
         </button>
       </form>
       <p class="mt-4 alice-regular text-center">

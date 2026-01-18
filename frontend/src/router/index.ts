@@ -3,6 +3,8 @@ import HomePage from "../pages/HomePage.vue";
 import Dashboard from "../pages/Dashboard.vue";
 import Login from "../pages/Login.vue";
 import Register from "../pages/Register.vue";
+import Perfil from "../pages/Perfil.vue";
+import Project from "../pages/Project.vue";
 
 const router = createRouter({
   // router options
@@ -27,6 +29,16 @@ const router = createRouter({
       path: "/register",
       name: "register",
       component: Register,
+    },
+    {
+      path: "/profile/:username",
+      name: "profile",
+      component: Perfil,
+    },
+    {
+      path: "/project/:projectId",
+      name: "project",
+      component: Project,
     },
   ],
 });

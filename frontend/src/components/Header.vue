@@ -1,4 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useAuthStore } from "../stores/authStore";
+import TextButton from "./TextButton.vue";
+import { ref } from "vue";
+
+const authenticated = ref(useAuthStore().isAuthenticated);
+const username = ref(useAuthStore().user?.username || "");
+</script>
 <template>
   <header
     class="navbar w-full h-20 bg-gradient-to-b from-white to-transparent flex flex-row justify-between p-4 items-center px-10"
@@ -15,8 +22,17 @@
         />
       </router-link>
     </div>
-    <div class="bg-gray-800 rounded-full h-4 w-4">
-      <!-- placeholder for the profile menu icon -->
+    <div v-if="authenticated">
+      <router-link :to="`/profile/${username}`" class="mr-4">
+        <div class="bg-gray-800 rounded-full h-4 w-4">
+          <!-- placeholder for the profile menu icon -->
+        </div>
+      </router-link>
+    </div>
+    <div v-else>
+      <router-link to="/register" class="mr-4">
+        <text-button class="mr-4">Registrar-se</text-button>
+      </router-link>
     </div>
   </header>
 </template>
