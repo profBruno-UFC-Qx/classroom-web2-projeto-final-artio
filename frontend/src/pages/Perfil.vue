@@ -2,11 +2,18 @@
 import { ref } from "vue";
 import PageLayout from "../components/PageLayout.vue";
 import { useAuthStore } from "../stores/authStore";
-import { ArrowLeft, Pencil } from "lucide-vue-next";
+import { ArrowLeft, Pencil, Plus } from "lucide-vue-next";
 import TextButton from "../components/TextButton.vue";
+import router from "../router";
 
 const name = ref(useAuthStore().user?.name || "Usuário");
 const description = ref("Descrição do usuário aqui.");
+
+function handleLogout() {
+  const authStore = useAuthStore();
+  authStore.logout();
+  router.push({ name: "home" });
+}
 </script>
 <template>
   <PageLayout>
@@ -21,7 +28,7 @@ const description = ref("Descrição do usuário aqui.");
         ></div>
         <div class="col-span-5 justify-end">
           <div
-            class="name-container flex flex-row justify-between items-center pr-4"
+            class="title-container flex flex-row justify-between items-center pr-4"
           >
             <p class="alice-bold text-xl">{{ name }}</p>
             <div>
@@ -40,9 +47,17 @@ const description = ref("Descrição do usuário aqui.");
           </TextButton>
         </router-link>
         <TextButton color="purple">Dashboard</TextButton>
+        <TextButton color="red" @click="handleLogout">Logout</TextButton>
       </div>
-      <div class="project-container">
-        <h2 class="alice-bold text-2xl">Projetos</h2>
+      <div class="project-container w-full">
+        <div
+          class="title-container flex flex-row justify-between items-center pr-4"
+        >
+          <h2 class="alice-bold text-2xl">Projetos</h2>
+          <div>
+            <plus class="size-5 cursor-pointer hover:text-gray-600" />
+          </div>
+        </div>
         <!-- Placeholder for user projects -->
         <p>Aqui estarão listados os projetos associados ao usuário.</p>
       </div>
