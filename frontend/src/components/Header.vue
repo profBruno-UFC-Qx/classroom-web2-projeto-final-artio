@@ -29,7 +29,9 @@ const authenticated = ref(useAuthStore().isAuthenticated);
       </router-link>
     </div>
     <div v-else>
-      <text-button to="/register" class="mr-4">Registrar-se</text-button>
+      <router-link to="/register" class="mr-4">
+        <text-button class="mr-4">Registrar-se</text-button>
+      </router-link>
     </div>
   </header>
 </template>

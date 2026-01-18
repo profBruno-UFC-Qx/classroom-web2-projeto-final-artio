@@ -20,11 +20,47 @@ enum UserRole {
 }
 
 model User {
-  id                String    @id @default(uuid())
+  username          String    @id @unique
   name              String
   email             String    @unique
   password          String
   description       String?
   role              UserRole  @default(CLIENT)   
   socialmedia       String?   
+  createdProjects          Project[] @relation("ArtistProject")
+  contractedProjects       Project[] @relation("ContractedProject")
+  collaborations           Collaborator[]
+}
+
+enum ProjectStatus{
+  PENDING
+  IN_PROGRESS
+  REVIEWING
+  COMPLETED
+  CANCELED
+}
+
+model Project {
+  id                String   @id @default(uuid())
+  name              String
+  isPublic          Boolean       @default(false)
+  description       String?
+  notes             String?
+  status            ProjectStatus @default(PENDING)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  authorId          String
+  author            User          @relation("ArtistProject", fields: [authorId], references: [username])
+  clientId          String?
+  client            User?         @relation("ContractedProject", fields: [clientId], references: [username])
+  collaborators     Collaborator[]
+}
+
+model Collaborator {
+  userId           String
+  projectId        String
+  user             User          @relation(fields: [userId], references: [username])
+  project          Project       @relation(fields: [projectId], references: [id])
+  
+  @@id([userId, projectId])
 }
