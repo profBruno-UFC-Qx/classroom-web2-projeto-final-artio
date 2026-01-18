@@ -1,23 +1,62 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import PageLayout from "../components/PageLayout.vue";
 import { useAuthStore } from "../stores/authStore";
 import { ArrowLeft, Pencil, Plus } from "lucide-vue-next";
 import TextButton from "../components/TextButton.vue";
 import router from "../router";
+import NewProjectModal from "../components/NewProjectModal.vue";
+import { onMounted } from "vue";
+import { useRoute } from "vue-router";
 
-const name = ref(useAuthStore().user?.name || "Usuário");
-const description = ref("Descrição do usuário aqui.");
+const route = useRoute();
+const userId = route.params.username as string;
+
+const name = ref("");
+const username = ref("");
+const description = ref("");
+const createModal = ref(false);
+
+const authStore = useAuthStore();
+const isOwnProfile = computed(() => {
+  console.log(
+    "Comparing userId:",
+    userId,
+    "with logged in user:",
+    authStore.user?.username,
+  );
+  return authStore.user && authStore.user.username === userId;
+});
+
+onMounted(async () => {
+  try {
+    name.value = authStore.user?.name || "";
+    username.value = authStore.user?.username || "";
+    description.value =
+      authStore.user?.description || "Sem descrição disponível.";
+  } catch (error) {
+    console.error("Erro ao buscar dados do usuário:", error);
+  }
+});
 
 function handleLogout() {
   const authStore = useAuthStore();
   authStore.logout();
   router.push({ name: "home" });
 }
+
+function openCloseModal() {
+  createModal.value = !createModal.value;
+}
 </script>
 <template>
   <PageLayout>
     <div class="profile-container items-start p-4 w-full gap-4 flex flex-col">
+      <router-link to="/">
+        <TextButton>
+          <arrow-left />
+        </TextButton>
+      </router-link>
       <h1 class="ade-display text-2xl">Perfil de Usuário</h1>
       <div
         class="icon-container grid grid-cols-6 gap-4 items-center mt-4 w-full"
@@ -31,6 +70,7 @@ function handleLogout() {
             class="title-container flex flex-row justify-between items-center pr-4"
           >
             <p class="alice-bold text-xl">{{ name }}</p>
+            <p>{{ username }}</p>
             <div>
               <!-- Placeholder for edit profile button -->
               <pencil class="size-5 cursor-pointer hover:text-gray-600" />
@@ -40,12 +80,10 @@ function handleLogout() {
         </div>
       </div>
       <br class="m-4" />
-      <div class="quick-actions flex flex-row gap-4 justify-between mt-2">
-        <router-link to="/">
-          <TextButton>
-            <arrow-left />
-          </TextButton>
-        </router-link>
+      <div
+        class="quick-actions flex flex-row gap-4 justify-between mt-2"
+        v-if="isOwnProfile"
+      >
         <TextButton color="purple">Dashboard</TextButton>
         <TextButton color="red" @click="handleLogout">Logout</TextButton>
       </div>
@@ -54,8 +92,12 @@ function handleLogout() {
           class="title-container flex flex-row justify-between items-center pr-4"
         >
           <h2 class="alice-bold text-2xl">Projetos</h2>
-          <div>
-            <plus class="size-5 cursor-pointer hover:text-gray-600" />
+          <div v-if="isOwnProfile">
+            <plus
+              class="size-5 cursor-pointer hover:text-gray-600"
+              @click="openCloseModal"
+            />
+            <NewProjectModal v-if="createModal" :onClose="openCloseModal" />
           </div>
         </div>
         <!-- Placeholder for user projects -->

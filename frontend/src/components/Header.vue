@@ -4,6 +4,7 @@ import TextButton from "./TextButton.vue";
 import { ref } from "vue";
 
 const authenticated = ref(useAuthStore().isAuthenticated);
+const username = ref(useAuthStore().user?.username || "");
 </script>
 <template>
   <header
@@ -22,7 +23,7 @@ const authenticated = ref(useAuthStore().isAuthenticated);
       </router-link>
     </div>
     <div v-if="authenticated">
-      <router-link to="/profile" class="mr-4">
+      <router-link :to="`/profile/${username}`" class="mr-4">
         <div class="bg-gray-800 rounded-full h-4 w-4">
           <!-- placeholder for the profile menu icon -->
         </div>

@@ -5,9 +5,9 @@ import ProjectService from "../services/ProjectService";
 class ProjectController {
   // criação de projeto
   public static async createProject(req: Request, res: Response) {
-    let { name, description, authorId, isPublic } = req.body;
+    let { name, description, username, isPublic } = req.body;
     if (!name) {
-      const totalProjects = await ProjectService.getProjectsByAuthor(authorId);
+      const totalProjects = await ProjectService.getProjectsByAuthor(username);
       name = "Untitled " + (totalProjects.length + 1);
     }
 
@@ -15,12 +15,13 @@ class ProjectController {
       const data = {
         name,
         description,
-        authorId,
-        isPublic: isPublic ? true : false,
+        isPublic: isPublic || false,
+        author: { connect: { username: username } },
       };
       const newProject = await prisma.project.create({
         data: data,
       });
+      console.log("New project created:", newProject);
       res.status(201).json(newProject);
     } catch (error) {
       res.status(400).json({ message: (error as Error).message });
@@ -28,7 +29,7 @@ class ProjectController {
   }
 
   public static async getProjectsByAuthor(req: Request, res: Response) {
-    let authorId = req.params.authorId;
+    let authorId = req.params.id;
     if (Array.isArray(authorId)) {
       authorId = authorId[0];
     }

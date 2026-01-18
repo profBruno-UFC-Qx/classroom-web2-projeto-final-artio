@@ -27,6 +27,16 @@ class AuthController {
       res.status(400).json({ message: (error as Error).message });
     }
   }
+
+  public static async getUserById(req: Request, res: Response) {
+    const { id } = req.params;
+    try {
+      const user = await AuthService.getUserById(id[0]);
+      res.status(200).json(user);
+    } catch (error) {
+      res.status(404).json({ message: (error as Error).message });
+    }
+  }
 }
 
 export default AuthController;
