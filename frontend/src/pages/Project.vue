@@ -10,7 +10,6 @@ import { ArrowLeft } from "lucide-vue-next";
 
 const route = useRoute();
 const projectId = route.params.projectId as string;
-const backLink = (route.query.back as string) || "/projects";
 
 const project = ref<Project | null>(null);
 onMounted(async () => {
@@ -31,7 +30,7 @@ function formatDate(dateStr: string): string {
 <template>
   <PageLayout>
     <div v-if="project" class="project-details w-full p-4 flex flex-col gap-4">
-      <router-link :to="backLink">
+      <router-link :to="`/profile/${project.authorId}`">
         <TextButton>
           <ArrowLeft />
         </TextButton>

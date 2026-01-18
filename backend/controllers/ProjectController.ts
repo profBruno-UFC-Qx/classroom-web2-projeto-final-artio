@@ -72,6 +72,25 @@ class ProjectController {
       res.status(400).json({ message: (error as Error).message });
     }
   }
+  public static async createProjectRequest(req: Request, res: Response) {
+    const artistId = req.params.artistId;
+    const { clientId, title, description, startOffer } = req.body;
+    try {
+      const newRequest = await prisma.request.create({
+        data: {
+          title,
+          description,
+          startOffer,
+          artist: { connect: { username: artistId.toString() } },
+          client: { connect: { username: clientId } },
+        },
+      });
+      console.log("New project request created:", newRequest);
+      res.status(201).json(newRequest);
+    } catch (error) {
+      res.status(400).json({ message: (error as Error).message });
+    }
+  }
 }
 
 export default ProjectController;
