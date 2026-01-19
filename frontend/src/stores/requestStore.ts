@@ -22,7 +22,19 @@ export const useRequestStore = defineStore("request", () => {
     }
   }
 
+  async function acceptRequest(requestId: string) {
+    try {
+      const response = await api.post(`projects/request/accept/${requestId}`);
+      console.log("Request acceptance response:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Request acceptance failed:", error);
+      throw error;
+    }
+  }
+
   return {
     createRequest,
+    acceptRequest,
   };
 });

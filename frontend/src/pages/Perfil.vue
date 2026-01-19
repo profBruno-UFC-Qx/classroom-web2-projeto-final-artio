@@ -99,7 +99,9 @@ function openCloseModal() {
         class="quick-actions flex flex-row gap-4 justify-between mt-2"
         v-if="isOwnProfile"
       >
-        <TextButton color="purple">Dashboard</TextButton>
+        <router-link to="/dashboard">
+          <TextButton color="purple">Dashboard</TextButton>
+        </router-link>
         <TextButton color="red" @click="handleLogout">Logout</TextButton>
       </div>
       <div v-else>

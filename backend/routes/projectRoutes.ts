@@ -10,5 +10,13 @@ projectRoutes.post(
   "/request/:artistId",
   ProjectController.createProjectRequest,
 );
+projectRoutes.get(
+  "/request/:artistId",
+  ProjectController.getProjectRequestsByArtist,
+);
+projectRoutes.post(
+  "/request/accept/:requestId",
+  ProjectController.acceptProjectRequest,
+);
 
 export default projectRoutes;
