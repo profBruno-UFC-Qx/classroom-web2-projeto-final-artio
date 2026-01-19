@@ -30,6 +30,8 @@ model User {
   createdProjects          Project[] @relation("ArtistProject")
   contractedProjects       Project[] @relation("ContractedProject")
   collaborations           Collaborator[]
+  createdRequests                 Request[] @relation("ContractedRequest")
+  requestList                Request[] @relation("RequestList")
 }
 
 enum ProjectStatus{
@@ -63,4 +65,17 @@ model Collaborator {
   project          Project       @relation(fields: [projectId], references: [id])
   
   @@id([userId, projectId])
+}
+
+model Request{
+  id                String      @id @default(uuid())
+  artistId          String
+  clientId          String
+  title             String
+  description       String?
+  startOffer        Float?     @default(0.0)
+  artist            User       @relation("RequestList", fields: [artistId], references: [username])
+  client            User       @relation("ContractedRequest", fields: [clientId], references: [username])
+  dateOfRequest     DateTime   @default(now())
+  dateOfApproval    DateTime?
 }

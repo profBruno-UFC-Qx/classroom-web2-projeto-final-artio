@@ -72,6 +72,62 @@ class ProjectController {
       res.status(400).json({ message: (error as Error).message });
     }
   }
+  public static async createProjectRequest(req: Request, res: Response) {
+    const artistId = req.params.artistId;
+    const { clientId, title, description, startOffer } = req.body;
+    try {
+      const newRequest = await prisma.request.create({
+        data: {
+          title,
+          description,
+          startOffer,
+          artist: { connect: { username: artistId.toString() } },
+          client: { connect: { username: clientId } },
+        },
+      });
+      console.log("New project request created:", newRequest);
+      res.status(201).json(newRequest);
+    } catch (error) {
+      res.status(400).json({ message: (error as Error).message });
+    }
+  }
+  public static async getProjectRequestsByArtist(req: Request, res: Response) {
+    const artistId = req.params.artistId;
+    try {
+      const requests = await prisma.request.findMany({
+        where: { artistId: artistId.toString() },
+      });
+      res.status(200).json(requests);
+    } catch (error) {
+      res.status(400).json({ message: (error as Error).message });
+    }
+  }
+  public static async acceptProjectRequest(req: Request, res: Response) {
+    const requestId = req.params.requestId;
+    console.log("Accepting request with ID:", requestId);
+    try {
+      const request = await prisma.request.findUnique({
+        where: { id: requestId.toString() },
+      });
+      if (!request) {
+        return res.status(404).json({ message: "Request not found" });
+      }
+      const newProject = await prisma.project.create({
+        data: {
+          name: request.title,
+          description: request.description,
+          isPublic: false,
+          author: { connect: { username: request.artistId } },
+        },
+      });
+      await prisma.request.delete({
+        where: { id: requestId.toString() },
+      });
+      res.status(201).json(newProject);
+    } catch (error) {
+      res.status(400).json({ message: (error as Error).message });
+    }
+  }
 }
 
 export default ProjectController;

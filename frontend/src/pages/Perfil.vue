@@ -11,6 +11,7 @@ import { useRoute } from "vue-router";
 import api from "../services/api";
 import ProjectMini from "../components/ProjectMini.vue";
 import type { Project } from "../types/project";
+import NewRequest from "../components/NewRequest.vue";
 
 const route = useRoute();
 const userId = route.params.username as string;
@@ -98,8 +99,18 @@ function openCloseModal() {
         class="quick-actions flex flex-row gap-4 justify-between mt-2"
         v-if="isOwnProfile"
       >
-        <TextButton color="purple">Dashboard</TextButton>
+        <router-link to="/dashboard">
+          <TextButton color="purple">Dashboard</TextButton>
+        </router-link>
         <TextButton color="red" @click="handleLogout">Logout</TextButton>
+      </div>
+      <div v-else>
+        <TextButton color="purple" @click="openCloseModal"
+          >Requisitar projeto</TextButton
+        >
+      </div>
+      <div v-if="createModal && !isOwnProfile">
+        <NewRequest :onClose="openCloseModal" :artistId="userId" />
       </div>
       <div class="project-container w-full flex flex-col gap-4 mt-4">
         <div
@@ -112,7 +123,7 @@ function openCloseModal() {
               @click="openCloseModal"
             />
             <NewProjectModal
-              v-if="createModal"
+              v-if="createModal && isOwnProfile"
               :onClose="openCloseModal"
               :onProjectCreated="onProjectCreated"
             />
@@ -122,7 +133,13 @@ function openCloseModal() {
           class="project-list w-full flex flex-row gap-4 overflow-x-auto pb-4"
           v-if="projects && projects.length > 0"
         >
-          <ProjectMini :project="p" v-for="p in projects" :key="p.id" />
+          <router-link
+            :to="`/project/${p.id}`"
+            v-for="p in projects"
+            :key="p.id"
+          >
+            <ProjectMini :project="p" />
+          </router-link>
         </div>
         <p v-else>Nenhum projeto encontrado.</p>
       </div>
