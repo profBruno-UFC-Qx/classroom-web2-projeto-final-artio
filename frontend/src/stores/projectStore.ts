@@ -13,7 +13,16 @@ export const useProjectStore = defineStore("project", () => {
   }) {
     console.log("Fetching projects with requestData:", requestData);
     try {
-      const response = await api.get("/projects", { params: requestData });
+      const response = await api.get(
+        `/projects/user/${requestData?.authorId}`,
+        {
+          params: {
+            page: requestData?.page,
+            pageSize: requestData?.pageSize,
+          },
+        },
+      );
+      console.log("Fetched projects:", response.data);
       projects.value.splice(0, projects.value.length, ...response.data);
       return response.data;
     } catch (error) {

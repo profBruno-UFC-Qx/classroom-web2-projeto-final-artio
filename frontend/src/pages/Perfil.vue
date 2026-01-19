@@ -12,6 +12,7 @@ import api from "../services/api";
 import ProjectMini from "../components/ProjectMini.vue";
 import type { Project } from "../types/project";
 import NewRequest from "../components/NewRequest.vue";
+import { useProjectStore } from "../stores/projectStore";
 
 const route = useRoute();
 const userId = route.params.username as string;
@@ -23,12 +24,6 @@ const createModal = ref(false);
 
 const authStore = useAuthStore();
 const isOwnProfile = computed(() => {
-  console.log(
-    "Comparing userId:",
-    userId,
-    "with logged in user:",
-    authStore.user?.username,
-  );
   return authStore.user && authStore.user.username === userId;
 });
 const projects = ref<Project[] | null>(null);
@@ -41,8 +36,10 @@ onMounted(async () => {
     username.value = userData.username;
     description.value = userData.description || "Sem descrição disponível.";
 
-    const projectsResponse = await api.get(`/projects/user/${userId}`);
-    projects.value = projectsResponse.data;
+    const projectsResponse = await useProjectStore().fetchProjects({
+      authorId: userId,
+    });
+    projects.value = projectsResponse;
   } catch (error) {
     console.error("Erro ao buscar dados do usuário:", error);
   }

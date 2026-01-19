@@ -19,6 +19,13 @@ async function handleSubmit() {
   // Lógica para criar um novo projeto
   const authStore = useAuthStore();
   clientId.value = authStore.user?.username || null;
+  console.log("Creating project with:", {
+    artistId: props.artistId,
+    clientId: clientId.value,
+    title: projectName.value,
+    description: projectDescription.value,
+    startOffer: startOffer.value,
+  });
   if (!clientId.value) {
     console.error("Usuário não autenticado.");
     return;
