@@ -5,6 +5,7 @@ import Login from "../pages/Login.vue";
 import Register from "../pages/Register.vue";
 import Perfil from "../pages/Perfil.vue";
 import Project from "../pages/Project.vue";
+import NotFound from "../pages/NotFound.vue";
 
 const router = createRouter({
   // router options
@@ -39,6 +40,11 @@ const router = createRouter({
       path: "/project/:projectId",
       name: "project",
       component: Project,
+    },
+    {
+      path: "/not-found",
+      name: "not-found",
+      component: NotFound,
     },
   ],
 });

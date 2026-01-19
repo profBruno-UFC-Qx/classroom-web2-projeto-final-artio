@@ -18,7 +18,9 @@ const authenticated = ref(useAuthStore().isAuthenticated);
         </h2>
       </div>
       <div class="action-buttons flex gap-4 mt-6">
-        <TextButton>Primeiros Passos</TextButton>
+        <router-link to="/not-found">
+          <TextButton>Primeiros Passos</TextButton>
+        </router-link>
         <div v-if="authenticated">
           <router-link to="/dashboard">
             <TextButton>Dashboard</TextButton>

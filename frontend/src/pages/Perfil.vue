@@ -13,21 +13,22 @@ import ProjectMini from "../components/ProjectMini.vue";
 import type { Project } from "../types/project";
 import NewRequest from "../components/NewRequest.vue";
 import { useProjectStore } from "../stores/projectStore";
+import { watch } from "vue";
 
 const route = useRoute();
-const userId = route.params.username as string;
-
 const name = ref("");
 const username = ref("");
 const description = ref("");
 const createModal = ref(false);
+const projects = ref<Project[] | null>(null);
 
 const authStore = useAuthStore();
 const isOwnProfile = computed(() => {
-  return authStore.user && authStore.user.username === userId;
+  return authStore.user && authStore.user.username === route.params.username;
 });
-const projects = ref<Project[] | null>(null);
-onMounted(async () => {
+
+async function fetchProfileData() {
+  const userId = route.params.username as string;
   try {
     const response = await api.get(`/profile/${userId}`);
     const userData = response.data;
@@ -42,8 +43,13 @@ onMounted(async () => {
     projects.value = projectsResponse;
   } catch (error) {
     console.error("Erro ao buscar dados do usuário:", error);
+    router.push({ name: "not-found" });
   }
-});
+}
+
+onMounted(fetchProfileData);
+
+watch(() => route.params.username, fetchProfileData);
 
 function handleLogout() {
   const authStore = useAuthStore();
@@ -53,9 +59,7 @@ function handleLogout() {
 
 function onProjectCreated() {
   // Re-fetch projects after a new project is created
-  api.get(`/projects/user/${userId}`).then((response) => {
-    projects.value = response.data;
-  });
+  fetchProfileData();
 }
 function openCloseModal() {
   createModal.value = !createModal.value;
@@ -107,7 +111,7 @@ function openCloseModal() {
         >
       </div>
       <div v-if="createModal && !isOwnProfile">
-        <NewRequest :onClose="openCloseModal" :artistId="userId" />
+        <NewRequest :onClose="openCloseModal" :artistId="username" />
       </div>
       <div class="project-container w-full flex flex-col gap-4 mt-4">
         <div
