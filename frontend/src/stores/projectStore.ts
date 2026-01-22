@@ -6,6 +6,20 @@ import { ref } from "vue";
 export const useProjectStore = defineStore("project", () => {
   const projects = ref<Project[]>([]);
 
+  async function fetchAll(page?: number, pageSize?: number) {
+    try {
+      const response = await api.get("/projects", {
+        params: {
+          page,
+          pageSize,
+        },
+      });
+      projects.value.splice(0, projects.value.length, ...response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Failed to fetch all projects:", error);
+    }
+  }
   async function fetchProjects(requestData?: {
     authorId: string;
     page?: number;
@@ -13,7 +27,16 @@ export const useProjectStore = defineStore("project", () => {
   }) {
     console.log("Fetching projects with requestData:", requestData);
     try {
-      const response = await api.get("/projects", { params: requestData });
+      const response = await api.get(
+        `/projects/user/${requestData?.authorId}`,
+        {
+          params: {
+            page: requestData?.page,
+            pageSize: requestData?.pageSize,
+          },
+        },
+      );
+      console.log("Fetched projects:", response.data);
       projects.value.splice(0, projects.value.length, ...response.data);
       return response.data;
     } catch (error) {
@@ -40,5 +63,6 @@ export const useProjectStore = defineStore("project", () => {
     createProject,
     fetchProjects,
     projects,
+    fetchAll,
   };
 });

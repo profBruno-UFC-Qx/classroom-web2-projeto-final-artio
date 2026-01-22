@@ -7,6 +7,7 @@ import PageLayout from "../components/PageLayout.vue";
 import StatusBanner from "../components/StatusBanner.vue";
 import TextButton from "../components/TextButton.vue";
 import { ArrowLeft } from "lucide-vue-next";
+import router from "../router";
 
 const route = useRoute();
 const projectId = route.params.projectId as string;
@@ -19,6 +20,7 @@ onMounted(async () => {
     console.log("Project data:", project.value);
   } catch (error) {
     console.error("Erro ao buscar dados do projeto:", error);
+    router.push({ name: "not-found" });
   }
 });
 

@@ -2,7 +2,7 @@
 import { computed, ref } from "vue";
 import PageLayout from "../components/PageLayout.vue";
 import { useAuthStore } from "../stores/authStore";
-import { ArrowLeft, Pencil, Plus } from "lucide-vue-next";
+import { ArrowLeft, Plus } from "lucide-vue-next";
 import TextButton from "../components/TextButton.vue";
 import router from "../router";
 import NewProjectModal from "../components/NewProjectModal.vue";
@@ -12,27 +12,23 @@ import api from "../services/api";
 import ProjectMini from "../components/ProjectMini.vue";
 import type { Project } from "../types/project";
 import NewRequest from "../components/NewRequest.vue";
+import { useProjectStore } from "../stores/projectStore";
+import { watch } from "vue";
 
 const route = useRoute();
-const userId = route.params.username as string;
-
 const name = ref("");
 const username = ref("");
 const description = ref("");
 const createModal = ref(false);
+const projects = ref<Project[] | null>(null);
 
 const authStore = useAuthStore();
 const isOwnProfile = computed(() => {
-  console.log(
-    "Comparing userId:",
-    userId,
-    "with logged in user:",
-    authStore.user?.username,
-  );
-  return authStore.user && authStore.user.username === userId;
+  return authStore.user && authStore.user.username === route.params.username;
 });
-const projects = ref<Project[] | null>(null);
-onMounted(async () => {
+
+async function fetchProfileData() {
+  const userId = route.params.username as string;
   try {
     const response = await api.get(`/profile/${userId}`);
     const userData = response.data;
@@ -41,12 +37,19 @@ onMounted(async () => {
     username.value = userData.username;
     description.value = userData.description || "Sem descrição disponível.";
 
-    const projectsResponse = await api.get(`/projects/user/${userId}`);
-    projects.value = projectsResponse.data;
+    const projectsResponse = await useProjectStore().fetchProjects({
+      authorId: userId,
+    });
+    projects.value = projectsResponse;
   } catch (error) {
     console.error("Erro ao buscar dados do usuário:", error);
+    router.push({ name: "not-found" });
   }
-});
+}
+
+onMounted(fetchProfileData);
+
+watch(() => route.params.username, fetchProfileData);
 
 function handleLogout() {
   const authStore = useAuthStore();
@@ -56,9 +59,7 @@ function handleLogout() {
 
 function onProjectCreated() {
   // Re-fetch projects after a new project is created
-  api.get(`/projects/user/${userId}`).then((response) => {
-    projects.value = response.data;
-  });
+  fetchProfileData();
 }
 function openCloseModal() {
   createModal.value = !createModal.value;
@@ -85,12 +86,8 @@ function openCloseModal() {
             class="title-container flex flex-row justify-between items-center pr-4"
           >
             <p class="alice-bold text-xl">{{ name }}</p>
-            <p>{{ username }}</p>
-            <div>
-              <!-- Placeholder for edit profile button -->
-              <pencil class="size-5 cursor-pointer hover:text-gray-600" />
-            </div>
           </div>
+          <p>{{ username }}</p>
           <p>{{ description }}</p>
         </div>
       </div>
@@ -110,7 +107,7 @@ function openCloseModal() {
         >
       </div>
       <div v-if="createModal && !isOwnProfile">
-        <NewRequest :onClose="openCloseModal" :artistId="userId" />
+        <NewRequest :onClose="openCloseModal" :artistId="username" />
       </div>
       <div class="project-container w-full flex flex-col gap-4 mt-4">
         <div
@@ -133,13 +130,14 @@ function openCloseModal() {
           class="project-list w-full flex flex-row gap-4 overflow-x-auto pb-4"
           v-if="projects && projects.length > 0"
         >
-          <router-link
-            :to="`/project/${p.id}`"
-            v-for="p in projects"
-            :key="p.id"
-          >
-            <ProjectMini :project="p" />
-          </router-link>
+          <div v-for="p in projects">
+            <div v-if="p.isPublic">
+              <router-link :to="`/project/${p.id}`" :key="p.id">
+                <ProjectMini :project="p" />
+              </router-link>
+            </div>
+            <div v-else></div>
+          </div>
         </div>
         <p v-else>Nenhum projeto encontrado.</p>
       </div>
