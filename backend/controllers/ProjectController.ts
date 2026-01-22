@@ -3,7 +3,19 @@ import prisma from "../models/PrismaClient";
 import ProjectService from "../services/ProjectService";
 
 class ProjectController {
-  // criação de projeto
+  public static async getAllProjects(req: Request, res: Response) {
+    const { page, pageSize } = req.query;
+    try {
+      const projects = await prisma.project.findMany({
+        skip:
+          page && pageSize ? (Number(page) - 1) * Number(pageSize) : undefined,
+        take: pageSize ? Number(pageSize) : undefined,
+      });
+      res.status(200).json(projects);
+    } catch (error) {
+      res.status(400).json({ message: (error as Error).message });
+    }
+  }
   public static async createProject(req: Request, res: Response) {
     let { name, description, username, isPublic } = req.body;
     if (!name) {
@@ -29,10 +41,8 @@ class ProjectController {
   }
 
   public static async getProjectsByAuthor(req: Request, res: Response) {
-    let authorId = req.params.id;
-    if (Array.isArray(authorId)) {
-      authorId = authorId[0];
-    }
+    let authorId = req.params.authorId.toString();
+    console.log("Fetching projects for authorId:", authorId);
     const page = req.query.page
       ? parseInt(req.query.page as string)
       : undefined;
