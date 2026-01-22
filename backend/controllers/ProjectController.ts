@@ -42,7 +42,6 @@ class ProjectController {
 
   public static async getProjectsByAuthor(req: Request, res: Response) {
     let authorId = req.params.authorId.toString();
-    console.log("Fetching projects for authorId:", authorId);
     const page = req.query.page
       ? parseInt(req.query.page as string)
       : undefined;

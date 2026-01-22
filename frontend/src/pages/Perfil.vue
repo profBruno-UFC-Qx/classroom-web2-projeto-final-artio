@@ -2,7 +2,7 @@
 import { computed, ref } from "vue";
 import PageLayout from "../components/PageLayout.vue";
 import { useAuthStore } from "../stores/authStore";
-import { ArrowLeft, Pencil, Plus } from "lucide-vue-next";
+import { ArrowLeft, Plus } from "lucide-vue-next";
 import TextButton from "../components/TextButton.vue";
 import router from "../router";
 import NewProjectModal from "../components/NewProjectModal.vue";
@@ -86,12 +86,8 @@ function openCloseModal() {
             class="title-container flex flex-row justify-between items-center pr-4"
           >
             <p class="alice-bold text-xl">{{ name }}</p>
-            <p>{{ username }}</p>
-            <div>
-              <!-- Placeholder for edit profile button -->
-              <pencil class="size-5 cursor-pointer hover:text-gray-600" />
-            </div>
           </div>
+          <p>{{ username }}</p>
           <p>{{ description }}</p>
         </div>
       </div>
@@ -134,13 +130,14 @@ function openCloseModal() {
           class="project-list w-full flex flex-row gap-4 overflow-x-auto pb-4"
           v-if="projects && projects.length > 0"
         >
-          <router-link
-            :to="`/project/${p.id}`"
-            v-for="p in projects"
-            :key="p.id"
-          >
-            <ProjectMini :project="p" />
-          </router-link>
+          <div v-for="p in projects">
+            <div v-if="p.isPublic">
+              <router-link :to="`/project/${p.id}`" :key="p.id">
+                <ProjectMini :project="p" />
+              </router-link>
+            </div>
+            <div v-else></div>
+          </div>
         </div>
         <p v-else>Nenhum projeto encontrado.</p>
       </div>

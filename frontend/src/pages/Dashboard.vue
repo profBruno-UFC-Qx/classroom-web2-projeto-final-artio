@@ -75,15 +75,13 @@ async function handleAcceptRequest() {
             <ArrowLeft />
           </TextButton>
         </router-link>
-        <TextButton color="purple">Projetos</TextButton>
-        <TextButton color="green">Mensagens</TextButton>
-        <TextButton color="yellow">Notificações</TextButton>
+        <router-link :to="`/profile/${user.username}`">
+          <TextButton color="blue">Meu Perfil</TextButton>
+        </router-link>
+        <router-link :to="`/not-found`">
+          <TextButton color="purple">Projetos</TextButton>
+        </router-link>
         <TextButton color="red" @click="handleLogout">Sair</TextButton>
-        <button
-          class="flex justify-center itens-center w-fit bg-gray-200 px-6 hover:bg-gray-300 hover:cursor-pointer py-2 border-gray-500 rounded-lg"
-        >
-          Configurações
-        </button>
       </div>
     </div>
     <div class="group my-2" id="deliveries">
